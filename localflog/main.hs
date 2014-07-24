@@ -13,6 +13,7 @@ Portability  : archlinux
 
 module Main where
 
+import           Codec.Compression.GZip
 import           Data.Aeson
 import           Data.Aeson.Encode.Pretty
 import qualified Data.ByteString.Lazy as Bl
@@ -22,14 +23,12 @@ import           Paths_flogger
 import qualified System.IO as Io
 import           Text.Flogger
 
-data LfInput = LfInput { compile    :: Bool
-                       , license    :: Bool
-                       , pretty     :: Bool
+data LfInput = LfInput { compile        :: Bool
+                       , license        :: Bool
+                       , compressOutput :: Bool
                        }
   deriving (Eq, Read, Show)
 
-printLbs :: Bl.ByteString -> IO ()
-printLbs = Bl.hPut Io.stdout
 
 readLbs :: IO Bl.ByteString
 readLbs = do
@@ -52,9 +51,11 @@ runInput lfi
 
   where
     jsonEncode :: ToJSON t0 => t0 -> Bl.ByteString
-    jsonEncode = if (pretty lfi)
-                   then encodePretty' (defConfig {confIndent=2})
-                   else encode
+    jsonEncode = if (compressOutput lfi)
+                   then compress . encode
+                   else encodePretty' (defConfig {confIndent=2})
+    printLbs :: Bl.ByteString -> IO ()
+    printLbs = Bl.hPut Io.stdout
 
 main :: IO ()
 main = do
@@ -75,7 +76,7 @@ main = do
                  <> long "license"
                  <> help "Print the license."
                  )
-      <*> switch (  short 'p'
-                 <> long "pretty-print"
-                 <> help "If using JSON as output format, pretty print the results."
+      <*> switch (  short 'z'
+                 <> long "compress"
+                 <> help "Compress the output with GZip."
                  )
