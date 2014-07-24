@@ -9,6 +9,8 @@ Maintainer   : Peter Harpending <pharpend2@gmail.com>
 Stability    : experimental
 Portability  : archlinux
 
+This is flc - the flogger local compiler.
+
 -}
 
 module Main where
@@ -64,7 +66,7 @@ main = do
   where
     opts = info (helper <*> parseInput)
       ( fullDesc
-     <> header "flc - local client for flogger."
+     <> header "flc - flogger local compiler"
       )
     parseInput :: Parser LfInput
     parseInput = LfInput
