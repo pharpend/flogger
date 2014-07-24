@@ -21,7 +21,6 @@ data-files:
 library
   -- other-modules:       
   other-extensions:    OverloadedStrings
-  hs-source-dirs:      lib/
   build-depends:
       aeson                >=0.8  && <0.9
     , aeson-pretty         >=0.7  && <0.8
@@ -42,8 +41,8 @@ library
       Text.Flogger.Types
 
 executable localflog
-  main-is:             main.hs
-  hs-source-dirs:      localflog/
+  main-is:             localflog.hs
+  hs-source-dirs:      executables/
   other-modules:       Paths_flogger
   other-extensions:    OverloadedStrings
   default-language:    Haskell2010
