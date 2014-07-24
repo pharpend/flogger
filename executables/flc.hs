@@ -64,7 +64,7 @@ main = do
   where
     opts = info (helper <*> parseInput)
       ( fullDesc
-     <> header "localflog - local client for flogger."
+     <> header "flc - local client for flogger."
       )
     parseInput :: Parser LfInput
     parseInput = LfInput

@@ -40,8 +40,8 @@ library
       Text.Flogger.Decompile
       Text.Flogger.Types
 
-executable localflog
-  main-is:             localflog.hs
+executable flc
+  main-is:             flc.hs
   hs-source-dirs:      executables/
   other-modules:       Paths_flogger
   other-extensions:    OverloadedStrings
