@@ -6,7 +6,7 @@ version:             0.0.0.0
 synopsis:            A client for the Flogger CMS.
 -- description:         
 homepage:            //github.com/pharpend/flogger
-license:             GPL-3
+license:             BSD3
 license-file:        LICENSE
 author:              Peter Harpending
 maintainer:          pharpend2@gmail.com
