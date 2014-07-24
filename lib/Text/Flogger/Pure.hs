@@ -43,5 +43,9 @@ nullPost = Post mempty nullTime [] mempty []
 nullTime :: UTCTime
 nullTime = UTCTime (ModifiedJulianDay 0) 0
 
+-- |Dummy Author value
 nullAuthor :: Author
 nullAuthor = Author mempty mempty
+
+nullBlog :: Blog
+nullBlog = Blog mempty mempty
