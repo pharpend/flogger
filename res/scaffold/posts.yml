@@ -1,0 +1,14 @@
+[
+  {
+    "title": "My first post",
+    "published-at": "2014-07-25T00:00:00Z",
+    "authors": [
+      {
+        "name": "Peter Harpending",
+        "email": "pharpend2@gmail.com"
+      }
+    ],
+    "text-file": "my-first-post.md",
+    "publish": true
+  }
+]
