@@ -13,27 +13,59 @@ Portability  : archlinux
 
 module Main where
 
+import           Data.Aeson
 import qualified Data.ByteString.Lazy as Bl
 import           Data.Monoid
 import qualified Data.Text as Ts
+import           Data.Yaml hiding (Parser, encode)
 import           Options.Applicative
-import           System.Exit
+import           Paths_flogger
 import qualified System.IO as Io
-
-type Blog = Ts.Text
+import           Text.Flogger
 
 data LfInput = LfInput { compile    :: Bool
                        , license    :: Bool
                        , inputFile  :: FilePath
-                       , inputForm  :: String
+                       , inputForm  :: Ts.Text
                        , outputFile :: FilePath
                        }
   deriving (Eq, Read, Show)
 
+runInput :: LfInput -> IO ()
+runInput lfi
+    | license lfi = do
+        licenseFile <- getDataFileName "LICENSE"
+        licenseBytes <- Bl.readFile licenseFile
+        outh <- outputHandle
+        Bl.hPut outh licenseBytes
+    | compile lfi = do
+        inh <- inputHandle
+        Io.hSetBinaryMode inh False
+        inputBytes <- Bl.hGetContents inh
+        outh <- outputHandle
+        case readInput inputBytes of
+          Left err -> fail err
+          Right bg -> Bl.hPut outh (encode bg)
+    | otherwise = return ()
+  where
+    outputHandle :: IO Io.Handle
+    outputHandle = case (outputFile lfi) of
+                     "STDOUT" -> return Io.stdout
+                     outFile  -> Io.openFile outFile Io.WriteMode
+    inputHandle :: IO Io.Handle
+    inputHandle  = case (inputFile lfi) of
+                     "STDIN" -> return Io.stdin
+                     inFile  -> Io.openFile inFile Io.ReadMode
+    readInput :: Bl.ByteString -> Either String Blog
+    readInput    = case (Ts.toLower $ inputForm lfi) of
+                     "yaml" -> decodeEither . Bl.toStrict
+                     "json" -> eitherDecode
+                     format -> fail $ "Unknown format: " <> show format
+
 main :: IO ()
 main = do
     input <- execParser opts
-    print $ show  input
+    runInput input
   where
     opts = info (helper <*> parseInput)
       ( fullDesc
@@ -71,4 +103,3 @@ main = do
                  <> value "STDOUT"
                  <> showDefault
                  )
-
