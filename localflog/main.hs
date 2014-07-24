@@ -17,7 +17,6 @@ import           Data.Aeson
 import           Data.Aeson.Encode.Pretty
 import qualified Data.ByteString.Lazy as Bl
 import           Data.Monoid
-import           Data.Yaml hiding (Parser, encode)
 import           Options.Applicative
 import           Paths_flogger
 import qualified System.IO as Io
@@ -45,7 +44,8 @@ runInput lfi
         printLbs licenseBytes
     | compile lfi = do
         inputBytes <- readLbs
-        case (decodeEither . Bl.toStrict) inputBytes :: Either String Blog of
+        dcb <- decompileBlog inputBytes
+        case dcb of
           Left err -> fail err
           Right bg -> printLbs (jsonEncode bg)
     | otherwise = fail $ "Unacceptable input " <> show lfi
