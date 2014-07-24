@@ -14,7 +14,6 @@ module Text.Flogger.Types where
 
 import           Control.Applicative
 import           Data.Aeson
-import           Data.Monoid
 import qualified Data.Text as Ts
 import qualified Data.Text.Lazy as Tl
 import           Data.Time

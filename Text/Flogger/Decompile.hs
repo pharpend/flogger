@@ -16,7 +16,6 @@ module Text.Flogger.Decompile where
 import           Control.Applicative
 import           Data.Aeson
 import qualified Data.ByteString.Lazy as Bl
-import           Data.Monoid
 import qualified Data.Text as Ts
 import qualified Data.Text.Lazy.IO as TlIO
 import           Data.Time
