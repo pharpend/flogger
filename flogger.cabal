@@ -33,6 +33,8 @@ library
   ghc-options:         -Wall -fno-warn-orphans -O1
   exposed-modules:
       Text.Flogger
+      Text.Flogger.JSON
+      Text.Flogger.Pure
 
 executable localflog
   main-is:             localflog.hs
