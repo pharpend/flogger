@@ -10,5 +10,6 @@ Portability  : archlinux
 
 module Text.Flogger (module Text.Flogger) where
 
-import Text.Flogger.Pure as Text.Flogger
-import Text.Flogger.JSON as Text.Flogger ()
+import Text.Flogger.Compile as Text.Flogger
+import Text.Flogger.Decompile as Text.Flogger
+import Text.Flogger.Types as Text.Flogger

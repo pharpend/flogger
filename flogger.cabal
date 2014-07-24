@@ -23,18 +23,23 @@ library
   other-extensions:    OverloadedStrings
   hs-source-dirs:      lib/
   build-depends:
-      aeson               >=0.8  && <0.9
-    , base                >=4.7  && <4.8
-    , blaze-html          >=0.7  && <0.8
-    , bytestring          >=0.10 && <0.11
-    , time                >=1.4  && <1.5
-    , text                >=1.1  && <1.2
+      aeson                >=0.8  && <0.9
+    , aeson-pretty         >=0.7  && <0.8
+    , base                 >=4.7  && <4.8
+    , blaze-html           >=0.7  && <0.8
+    , bytestring           >=0.10 && <0.11
+    , data-default         >=0.5  && <0.6
+    , markdown             >=0.1  && <0.2
+    , time                 >=1.4  && <1.5
+    , text                 >=1.1  && <1.2
+    , yaml                 >=0.8  && <0.9
   default-language:    Haskell2010
   ghc-options:         -Wall -fno-warn-orphans -O1
   exposed-modules:
       Text.Flogger
-      Text.Flogger.JSON
-      Text.Flogger.Pure
+      Text.Flogger.Compile
+      Text.Flogger.Decompile
+      Text.Flogger.Types
 
 executable localflog
   main-is:             main.hs
