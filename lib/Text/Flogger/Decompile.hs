@@ -16,6 +16,7 @@ module Text.Flogger.Decompile where
 import           Control.Applicative
 import           Data.Aeson
 import qualified Data.ByteString.Lazy as Bl
+import           Data.Monoid
 import qualified Data.Text as Ts
 import qualified Data.Text.Lazy.IO as TlIO
 import           Data.Time
@@ -47,13 +48,14 @@ decompileBlog bytes = do
           return $ Right $ mkBlog tposts
 
 mkPost :: AlmostPost -> IO Post
-mkPost (AlmostPost t as d mf p ts) = do
+mkPost (AlmostPost t tt as mf p ts) = do
   postMd <- TlIO.readFile mf
   let postHtml = markdown def postMd
       postText = renderHtml postHtml
-  return $ Post t as d postText p ts
+      utcTime  = tt
+  return $ Post t utcTime as postText p ts
 
-data AlmostBlog = AlmostBlog { aname      :: Ts.Text
+data AlmostBlog = AlmostBlog { aname     :: Ts.Text
                              , postsFile :: FilePath
                              }
   deriving (Eq, Read, Show)
@@ -61,7 +63,7 @@ data AlmostBlog = AlmostBlog { aname      :: Ts.Text
 data AlmostPost = AlmostPost { atitle     :: Ts.Text
                              , adate      :: UTCTime
                              , aauthors   :: [Author]
-                             , mdFile    :: FilePath
+                             , mdFile     :: FilePath
                              , apublished :: Bool
                              , atags      :: [Ts.Text]
                              }
@@ -80,3 +82,6 @@ instance FromJSON AlmostPost where
                                     <*> v .:? "publish" .!= False
                                     <*> v .:? "tags" .!= []
   parseJSON _          = fail "Post must be an object."
+
+nullTime :: UTCTime
+nullTime = UTCTime (ModifiedJulianDay 0) 0
